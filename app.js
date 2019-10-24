@@ -7,13 +7,26 @@ const config = require('./config')
 // an instance of express
 const app = express();
 
+// setup database schema
+let MessageSchema = new mongoose.Schema({
+    phoneNumber: String,
+    groupName: String,
+    totalAdults: String,
+    totalKids: String
+})
+
+// create the message model
+let Message = mongoose.model('Message', MessageSchema);
+
 // setup twilio config
-const accountSid = 'ACb7eb2596b595ce7fef6f6186c5a70646';
-const authToken = '47a5c3283121d8ea44bf843e928ad757';
+const accountSid = config.accountSid;
+const authToken = config.authToken;
 const client = new twilio(accountSid, authToken);
 
 // configure app to use bodyparser
 app.use(bodyParser.urlencoded({ extended: false }))
+
+
 
 // connect to database
 mongoose.connect(config.uri, { useNewUrlParser: true }).then(() => {
